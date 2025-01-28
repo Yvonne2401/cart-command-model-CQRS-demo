@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>cqrs-demo</artifactId>
+	<artifactId>cqrs-command-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cqrs-demo</name>
+	<name>cqrs-command-demo</name>
 	<description>CQRS demo with Axon</description>
 	<url/>
 	<licenses>

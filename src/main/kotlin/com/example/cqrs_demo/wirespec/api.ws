@@ -34,6 +34,20 @@ type PayForCart{
   amountPaid: Number
 }
 
+type Cart{
+    cartId: CartId,
+    isOrder: Boolean,
+    totalAmount: Number,
+    amountPaid: Number,
+    cartEntries: CartEntry[]
+}
+
+type CartEntry{
+    productId: ProductId,
+    quantity: Number,
+    basePrice: Number
+}
+
 endpoint PostCreateCart POST CreateCart /carts -> {
     200 -> CartId
 }
@@ -56,4 +70,8 @@ endpoint PatchRemoveItemFromCart PATCH RemoveItemFromCart /carts/{cartId: CartId
 
 endpoint PatchPayForCart PATCH PayForCart /carts/{cartId: CartId} -> {
     200 -> CartId
+}
+
+endpoint GetAllCarts GET /carts -> {
+    200 -> Cart[]
 }

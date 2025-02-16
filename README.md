@@ -11,6 +11,11 @@ This is an example how you could build a command side webapp using:
 
 This is an example the command model of an Ecommerce checkout service.
 
+  - Springboot
+  - Maven
+  - AxonFramework
+  - AxonServer (external jar or in Docker)
+  - WireSpec to generate the endpoints
 The aggregate is the Shopping(Cart) with the following events:
 
 

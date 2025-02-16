@@ -48,30 +48,26 @@ type CartEntry{
     basePrice: Number
 }
 
-endpoint PostCreateCart POST CreateCart /carts -> {
+endpoint CreateCart POST CreateCart /carts -> {
     200 -> CartId
 }
 
-endpoint PatchAddItemToCart PATCH AddItemToCart /carts/{cartId: CartId} -> {
+endpoint AddItemToCart POST AddItemToCart /carts/{cartId: CartId} -> {
     200 -> CartId
 }
 
-endpoint PatchAdjustItemQuantityInCart PATCH AdjustItemQuantityInCart /carts/{cartId: CartId} -> {
+endpoint AdjustItemQuantityInCart POST AdjustItemQuantityInCart /carts/{cartId: CartId} -> {
     200 -> CartId
 }
 
-endpoint PatchAdjustPriceOfItemInCart PATCH AdjustPriceOfItemInCart /carts/{cartId: CartId} -> {
+endpoint AdjustPriceOfItemInCart POST AdjustPriceOfItemInCart /carts/{cartId: CartId} -> {
     200 -> CartId
 }
 
-endpoint PatchRemoveItemFromCart PATCH RemoveItemFromCart /carts/{cartId: CartId} -> {
+endpoint RemoveItemFromCart POST RemoveItemFromCart /carts/{cartId: CartId} -> {
     200 -> CartId
 }
 
-endpoint PatchPayForCart PATCH PayForCart /carts/{cartId: CartId} -> {
+endpoint PayForCart POST PayForCart /carts/{cartId: CartId} -> {
     200 -> CartId
-}
-
-endpoint GetAllCarts GET /carts -> {
-    200 -> Cart[]
 }

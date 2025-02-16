@@ -124,7 +124,55 @@
 						<artifactId>kotlin-maven-noarg</artifactId>
 						<version>${kotlin.version}</version>
 					</dependency>
+					<dependency>
+						<groupId>community.flock.wirespec.integration</groupId>
+						<artifactId>spring-jvm</artifactId>
+						<version>0.11.2</version>
+					</dependency>
 				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>community.flock.wirespec.plugin.maven</groupId>
+				<artifactId>wirespec-maven-plugin</artifactId>
+				<version>0.11.2</version>
+				<dependencies>
+					<dependency>
+						<groupId>community.flock.wirespec.integration</groupId>
+						<artifactId>spring-jvm</artifactId>
+						<version>0.11.2</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>kotlin</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<input>${project.basedir}/src/main/wirespec</input>
+							<output>${project.build.directory}/generated-sources</output>
+							<packageName>community.flock.wirespec.generated.kotlin</packageName>
+							<languages>
+								<language>Kotlin</language>
+							</languages>
+						</configuration>
+					</execution>
+					<execution>
+						<id>spring</id>
+						<goals>
+							<goal>custom</goal>
+						</goals>
+						<configuration>
+							<input>${project.basedir}/src/main/wirespec</input>
+							<output>${project.build.directory}/generated-sources</output>
+							<emitterClass>community.flock.wirespec.integration.spring.java.emit.SpringJavaEmitter</emitterClass>
+							<shared>Java</shared>
+							<extension>java</extension>
+							<packageName>community.flock.wirespec.generated.java</packageName>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

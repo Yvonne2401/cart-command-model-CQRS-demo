@@ -1,0 +1,21 @@
+###
+POST http://localhost:8080/carts
+Content-Type: application/json
+
+{
+  "id": "bbcc74c9-74d1-43d5-a6df-880bc520b9fb"
+}
+
+###
+POST http://localhost:8080/carts/c7bf15f7-8803-4157-ac7a-43919a935e5a/add-item
+Content-Type: application/json
+
+{
+  "cartid": "c7bf15f7-8803-4157-ac7a-43919a935e5a",
+  "productid": "45c38dfa-5996-426a-a31f-2d058b3d2a4a",
+  "quantity" : 2,
+  "baseprice" : 10.99
+}
+###
+
+

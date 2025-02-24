@@ -69,7 +69,6 @@
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -144,20 +143,6 @@
 					</dependency>
 				</dependencies>
 				<executions>
-					<execution>
-						<id>kotlin</id>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<input>${project.basedir}/src/main/wirespec</input>
-							<output>${project.build.directory}/generated-sources</output>
-							<packageName>community.flock.wirespec.generated.kotlin</packageName>
-							<languages>
-								<language>Kotlin</language>
-							</languages>
-						</configuration>
-					</execution>
 					<execution>
 						<id>spring</id>
 						<goals>

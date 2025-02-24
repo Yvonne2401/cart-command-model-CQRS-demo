@@ -2,14 +2,14 @@ type CartId /[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b
 type ProductId /[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$
 
 type CreateCart {
-  cartId: CartId
+  cartid: CartId
 }
 
 type AddItemToCart{
-  cartId: CartId,
-  productId: ProductId,
+  cartid: CartId,
+  productid: ProductId,
   quantity: Number,
-  basePrice: Number
+  baseprice: Number
 }
 
 type AdjustItemQuantityInCart{
@@ -48,26 +48,32 @@ type CartEntry{
     basePrice: Number
 }
 
+type Error {
+  code: String,
+  description: String?
+}
+
 endpoint CreateCart POST CreateCart /carts -> {
     200 -> CartId
 }
 
-endpoint AddItemToCart POST AddItemToCart /carts/{cartId: CartId} -> {
+endpoint AddItemToCart POST AddItemToCart /carts/{cartId: CartId}/add-item -> {
+    200 -> CartId
+    404 -> Error
+}
+
+endpoint AdjustItemQuantityInCart POST AdjustItemQuantityInCart /carts/{cartId: CartId}/adjust-quantity -> {
     200 -> CartId
 }
 
-endpoint AdjustItemQuantityInCart POST AdjustItemQuantityInCart /carts/{cartId: CartId} -> {
+endpoint AdjustPriceOfItemInCart POST AdjustPriceOfItemInCart /carts/{cartId: CartId}/adjust-price -> {
     200 -> CartId
 }
 
-endpoint AdjustPriceOfItemInCart POST AdjustPriceOfItemInCart /carts/{cartId: CartId} -> {
+endpoint RemoveItemFromCart POST RemoveItemFromCart /carts/{cartId: CartId}/remove-item -> {
     200 -> CartId
 }
 
-endpoint RemoveItemFromCart POST RemoveItemFromCart /carts/{cartId: CartId} -> {
-    200 -> CartId
-}
-
-endpoint PayForCart POST PayForCart /carts/{cartId: CartId} -> {
+endpoint PayForCart POST PayForCart /carts/{cartId: CartId}/pay -> {
     200 -> CartId
 }

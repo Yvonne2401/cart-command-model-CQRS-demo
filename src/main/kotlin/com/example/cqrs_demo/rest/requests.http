@@ -21,7 +21,7 @@ POST http://localhost:8080/carts
 Content-Type: application/json
 
 {
-  "id": "bbcc74c9-74d1-43d5-a6df-880bc520b9fb"
+  "cartid": "bbcc74c9-74d1-43d5-a6df-880bc520b9fb"
 }
 
 ### Add item to cart with Wirespec
@@ -29,12 +29,8 @@ POST http://localhost:8080/carts/add-item
 Content-Type: application/json
 
 {
-  "cartid": {
-    "value": "b72889f1-5a34-48d8-a41c-f89799461717"
-  },
-  "productid": {
-    "value": "45c38dfa-5996-426a-a31f-2d058b3d2a4a"
-  },
+  "cartid": "b72889f1-5a34-48d8-a41c-f89799461717",
+  "productid": "45c38dfa-5996-426a-a31f-2d058b3d2a4a",
   "quantity": 4,
   "baseprice": 17.99
 }

@@ -5,6 +5,7 @@ import com.example.cqrs_demo.command.api.CreateCart
 import community.flock.wirespec.generated.java.AddItemToCartEndpoint
 import community.flock.wirespec.generated.java.CartId
 import community.flock.wirespec.generated.java.CreateCartEndpoint
+import community.flock.wirespec.generated.java.validate
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
@@ -23,6 +24,14 @@ class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoin
     override suspend fun addItemToCart(request: AddItemToCartEndpoint.Request): AddItemToCartEndpoint.Response<*> {
         val addItemToCart = request.body
         println("Incoming request body : $addItemToCart")
+
+        if(!addItemToCart.cartid.validate()){
+            error("Invalid cart id")
+        }
+
+        if(!addItemToCart.productid.validate()){
+            error("Invalid cart id")
+        }
 
         commandGateway.send<AddItemToCart>(
             AddItemToCart(

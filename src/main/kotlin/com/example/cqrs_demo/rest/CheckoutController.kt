@@ -22,6 +22,8 @@ class CheckoutController (val commandGateway: CommandGateway) : CreateCartEndpoi
     }
 
     override fun addItemToCart(request: AddItemToCartEndpoint.Request?): CompletableFuture<AddItemToCartEndpoint.Response<*>> {
+        println("Incoming request body : ${request?.body}")
+        println("request?.body?.cartid?.value() : ${request?.body?.cartid?.value()}")
         request?.body?.let { addItemToCartRequest ->
             commandGateway.send<AddItemToCart>(
                 AddItemToCart(
@@ -32,6 +34,6 @@ class CheckoutController (val commandGateway: CommandGateway) : CreateCartEndpoi
                 ))
                 return CompletableFuture.completedFuture(AddItemToCartEndpoint.Response200(addItemToCartRequest.cartid))
         }
-        return CompletableFuture.completedFuture(AddItemToCartEndpoint.Response404(community.flock.wirespec.generated.java.Error("404", Optional.of("Item not found"))))
+        return CompletableFuture.completedFuture(AddItemToCartEndpoint.Response404(Error("404", Optional.of("Item not found"))))
     }
 }

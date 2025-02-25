@@ -151,9 +151,9 @@
 						<configuration>
 							<input>${project.basedir}/src/main/wirespec</input>
 							<output>${project.build.directory}/generated-sources</output>
-							<emitterClass>community.flock.wirespec.integration.spring.java.emit.SpringJavaEmitter</emitterClass>
-							<shared>Java</shared>
-							<extension>java</extension>
+							<emitterClass>community.flock.wirespec.integration.spring.kotlin.emit.SpringKotlinEmitter</emitterClass>
+							<shared>Kotlin</shared>
+							<extension>kt</extension>
 							<packageName>community.flock.wirespec.generated.java</packageName>
 						</configuration>
 					</execution>

@@ -7,11 +7,11 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8080/carts/fc3319e6-daf7-4b49-8861-278ac0a0eba8/add-item
+POST http://localhost:8080/carts/5e1c7418-ef31-40eb-bc31-9e87091da13a/add-item
 Content-Type: application/json
 
 {
-  "cartid": "fc3319e6-daf7-4b49-8861-278ac0a0eba8",
+  "cartid": "5e1c7418-ef31-40eb-bc31-9e87091da13a",
   "productid": "45c38dfa-5996-426a-a31f-2d058b3d2a4a",
   "quantity" : 2,
   "baseprice" : 10.99

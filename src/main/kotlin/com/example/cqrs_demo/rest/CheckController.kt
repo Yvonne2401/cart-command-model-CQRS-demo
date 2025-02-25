@@ -12,7 +12,7 @@ import java.util.*
 import java.util.concurrent.CompletableFuture
 
 @RestController
-class CheckController (
+class CheckController(
     val commandGateway: CommandGateway
 ) {
 
@@ -20,8 +20,13 @@ class CheckController (
     fun createCart(): CompletableFuture<CreateCart> = commandGateway.send(CreateCart(UUID.randomUUID()))
 
     @PostMapping("/check/add-item-to-cart")
-    fun addItemToCart(@RequestBody(required = true) request: AddItemToCartRecord) {
-        println("Adding item ${request.productid} to cart $request.cartId")
-        commandGateway.send<AddItemToCart>(AddItemToCart(request.cartid, request.productid, request.quantity, BigDecimal(request.basePrice)))
-    }
+    fun addItemToCart(@RequestBody(required = true) request: AddItemToCartRecord): CompletableFuture<AddItemToCart> =
+        commandGateway.send(
+            AddItemToCart(
+                request.cartid,
+                request.productid,
+                request.quantity,
+                BigDecimal(request.basePrice)
+            )
+        )
 }

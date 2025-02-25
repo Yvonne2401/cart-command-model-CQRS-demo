@@ -57,7 +57,7 @@ endpoint CreateCart POST CreateCart /carts -> {
     200 -> CartId
 }
 
-endpoint AddItemToCart POST AddItemToCart /carts/{cartId: CartId}/add-item -> {
+endpoint AddItemToCart POST AddItemToCart /carts/add-item -> {
     200 -> CartId
     404 -> Error
 }

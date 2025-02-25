@@ -15,16 +15,14 @@ class JacksonConfig {
     @Bean
     @Primary
     fun objectMapper(): ObjectMapper {
-        val wirespecModuleKotlin = WirespecModuleKotlin()
         return ObjectMapper()
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .registerModules(wirespecModuleKotlin)
             .findAndRegisterModules()
+            .registerModules(WirespecModuleKotlin())
     }
 
     @Bean(name = [ "wirespecSpringWebClient"])
     fun webClient(): WebClient {
         return WebClient.builder().baseUrl("http://localhost:8080").build()
     }
-
 }

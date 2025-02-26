@@ -1,4 +1,6 @@
 # CQRS-command-model-demo
+Demo explaining CQRS by using Axon
+# CQRS-command-model-demo
 
 This is an example how you could build a command side webapp using:
 
@@ -18,7 +20,6 @@ This is an example the command model of an Ecommerce checkout service.
   - WireSpec to generate the endpoints
 The aggregate is the Shopping(Cart) with the following events:
 
-
 | Event                      | Description                                                         |
 |----------------------------|---------------------------------------------------------------------|
 | CartCreated                | a new Cart Aggregate was created                                    |
@@ -31,3 +32,7 @@ The aggregate is the Shopping(Cart) with the following events:
 | OrderCreated               | the order has been paid and created                                 |
 
 The goal is to map the incoming requests from REST endpoints into commands. In the Aggregate the commands will be handled in command handles in which the business logic is implemented
+
+This is an example of an Ecommerce checkout service.
+The aggregate is the Shopping(Cart) with the following events:
+

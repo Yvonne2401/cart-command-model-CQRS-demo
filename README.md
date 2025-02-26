@@ -9,7 +9,8 @@ This is an example how you could build a command side webapp using:
   - WireSpec to generate the endpoints
 
 
-This is an example of an Ecommerce checkout service.
+This is an example the command model of an Ecommerce checkout service.
+
 The aggregate is the Shopping(Cart) with the following events:
 
 
@@ -23,3 +24,5 @@ The aggregate is the Shopping(Cart) with the following events:
 | PriceOfItemInCartAdjusted  | the price of a product has changed                                  |
 | PaymentReceived            | a payment has been done                                             |
 | OrderCreated               | the order has been paid and created                                 |
+
+The goal is to map the incoming requests from REST endpoints into commands. In the Aggregate the commands will be handled in command handles in which the business logic is implemented

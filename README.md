@@ -18,6 +18,9 @@ This is an example the command model of an Ecommerce checkout service.
   - AxonFramework
   - AxonServer (external jar or in Docker)
   - WireSpec to generate the endpoints
+
+This is an example the command model of an Ecommerce checkout service.
+
 The aggregate is the Shopping(Cart) with the following events:
 
 | Event                      | Description                                                         |
@@ -35,4 +38,6 @@ The goal is to map the incoming requests from REST endpoints into commands. In t
 
 This is an example of an Ecommerce checkout service.
 The aggregate is the Shopping(Cart) with the following events:
+
+The goal is to map the incoming requests from REST endpoints into commands. In the Aggregate the commands will be handled in command handles in which the business logic is implemented
 

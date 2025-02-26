@@ -13,20 +13,20 @@ type AddItemToCart{
 }
 
 type AdjustItemQuantityInCart{
-    cartId: CartId,
-    productId: ProductId,
-    quantityDelta: Number
+  cartId: CartId,
+  productId: ProductId,
+  quantityDelta: Number
 }
 
 type AdjustPriceOfItemInCart{
-    cartId: CartId,
-    productId: ProductId,
-    newPrice: Number
+  cartId: CartId,
+  productId: ProductId,
+  newPrice: Number
 }
 
 type RemoveItemFromCart{
-    cartId: CartId,
-    productId: ProductId
+  cartId: CartId,
+  productId: ProductId
 }
 
 type PayForCart{
@@ -35,45 +35,66 @@ type PayForCart{
 }
 
 type Cart{
-    cartId: CartId,
-    isOrder: Boolean,
-    totalAmount: Number,
-    amountPaid: Number,
-    cartEntries: CartEntry[]
+  cartId: CartId,
+  isOrder: Boolean,
+  totalAmount: Number,
+  amountPaid: Number,
+  cartEntries: CartEntry[]
 }
 
 type CartEntry{
-    productId: ProductId,
-    quantity: Number,
-    basePrice: Number
+  productId: ProductId,
+  quantity: Number,
+  basePrice: Number
 }
 
-type Error {
+type BadRequest {
+  code: String,
+  description: String?
+}
+
+type NotFoundError {
+  code: String,
+  description: String?
+}
+
+type ConflictError{
   code: String,
   description: String?
 }
 
 endpoint CreateCart POST CreateCart /carts -> {
     200 -> CartId
+    400 -> BadRequest
+    409 -> ConflictError
 }
 
-endpoint AddItemToCart POST AddItemToCart /carts/add-item -> {
+endpoint AddItemToCart POST AddItemToCart /carts/{cartId: String}/add-item -> {
     200 -> CartId
-    404 -> Error
+    400 -> BadRequest
+    404 -> NotFoundError
 }
 
-endpoint AdjustItemQuantityInCart POST AdjustItemQuantityInCart /carts/{cartId: CartId}/adjust-quantity -> {
+endpoint AdjustItemQuantityInCart POST AdjustItemQuantityInCart /carts/{cartId: String}/adjust-quantity -> {
     200 -> CartId
+    400 -> BadRequest
+    404 -> NotFoundError
 }
 
-endpoint AdjustPriceOfItemInCart POST AdjustPriceOfItemInCart /carts/{cartId: CartId}/adjust-price -> {
+endpoint AdjustPriceOfItemInCart POST AdjustPriceOfItemInCart /carts/{cartId: String}/adjust-price -> {
     200 -> CartId
+    400 -> BadRequest
+    404 -> NotFoundError
 }
 
-endpoint RemoveItemFromCart POST RemoveItemFromCart /carts/{cartId: CartId}/remove-item -> {
+endpoint RemoveItemFromCart POST RemoveItemFromCart /carts/{cartId: String}/remove-item -> {
     200 -> CartId
+    400 -> BadRequest
+    404 -> NotFoundError
 }
 
-endpoint PayForCart POST PayForCart /carts/{cartId: CartId}/pay -> {
+endpoint PayForCart POST PayForCart /carts/{cartId: String}/pay -> {
     200 -> CartId
+    400 -> BadRequest
+    404 -> NotFoundError
 }

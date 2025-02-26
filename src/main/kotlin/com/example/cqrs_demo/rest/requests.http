@@ -1,22 +1,4 @@
-### Create cart without Wirespec
-
-POST http://localhost:8080/check/carts
-Content-Type: application/json
-
-### Add item to cart endpoint without Wirespec
-POST http://localhost:8080/check/add-item-to-cart
-Content-Type: application/json
-
-{
-  "cartid": "b72889f1-5a34-48d8-a41c-f89799461717",
-  "productid": "45c38dfa-5996-426a-a31f-2d058b3d2a4a",
-  "quantity" : 4,
-  "basePrice" : 17.99
-}
-
-############## WIRESPEC ENDPOINTS ############################
-
-### Create cart endpoint with Wirespec
+### Create cart
 POST http://localhost:8080/carts
 Content-Type: application/json
 
@@ -24,12 +6,12 @@ Content-Type: application/json
   "cartid": "bbcc74c9-74d1-43d5-a6df-880bc520b9fb"
 }
 
-### Add item to cart with Wirespec
-POST http://localhost:8080/carts/add-item
+### Add item to cart
+POST http://localhost:8080/carts/bbcc74c9-74d1-43d5-a6df-880bc520b9fb/add-item
 Content-Type: application/json
 
 {
-  "cartid": "b72889f1-5a34-48d8-a41c-f89799461717",
+  "cartid": "bbcc74c9-74d1-43d5-a6df-880bc520b9fb",
   "productid": "45c38dfa-5996-426a-a31f-2d058b3d2a4a",
   "quantity": 4,
   "baseprice": 17.99

@@ -27,6 +27,7 @@ class CqrsDemoApplicationTests {
 		.withExposedPorts(8024, 8024)
 		.withExposedPorts(8124, 8124)
 		.withExposedPorts(8224, 8224)
+		.waitingFor(org.testcontainers.containers.wait.strategy.Wait.forListeningPort())
 
 	@Test
 	fun contextLoads() {
@@ -39,7 +40,7 @@ class CqrsDemoApplicationTests {
 			.andExpect(status().isOk())
 			.andExpect(content().string(""));
 
-		mockMvc.perform(post("/carts/add-item").contentType(MediaType.APPLICATION_JSON)
+		mockMvc.perform(post("/carts/$cartId/add-item").contentType(MediaType.APPLICATION_JSON)
 			.content("""{"cartid": "$cartId", "productid": "$productId", "quantity": 1, "baseprice": 10}"""))
 			.andExpect(status().isOk())
 			.andExpect(content().string(""));

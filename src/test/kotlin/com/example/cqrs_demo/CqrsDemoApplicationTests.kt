@@ -36,12 +36,12 @@ class CqrsDemoApplicationTests {
 		val productId = UUID.randomUUID()
 
 		mockMvc.perform(post("/carts").contentType(MediaType.APPLICATION_JSON)
-			.content("""{"cartid": "$cartId"}"""))
+			.content("""{"cartId": "$cartId"}"""))
 			.andExpect(status().isOk())
 			.andExpect(content().string(""));
 
 		mockMvc.perform(post("/carts/$cartId/add-item").contentType(MediaType.APPLICATION_JSON)
-			.content("""{"cartid": "$cartId", "productid": "$productId", "quantity": 1, "baseprice": 10}"""))
+			.content("""{"productId": "$productId", "quantity": 1, "price": 10}"""))
 			.andExpect(status().isOk())
 			.andExpect(content().string(""));
 	}

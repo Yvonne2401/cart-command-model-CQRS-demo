@@ -27,13 +27,13 @@ data class TotalAmountRecalculated(
 data class ItemQuantityAdjustedInCart(
     val cartId: UUID,
     val productId: UUID,
-    val quantityDelta: Int,
+    val quantity: Int,
 )
 
 data class PriceOfItemInCartAdjusted(
     val cartId: UUID,
     val productId: UUID,
-    val newPrice: BigDecimal,
+    val price: BigDecimal,
 )
 
 data class OrderCreated(
@@ -41,12 +41,13 @@ data class OrderCreated(
     val orderId: UUID,
     val orderLines: List<OrderLine>,
     val totalAmount: BigDecimal,
+    val amountPaid: BigDecimal
 )
 
 data class OrderLine(
     val productId: UUID,
     val quantity: Int,
-    val unitPrice: BigDecimal,
+    val price: BigDecimal,
 )
 
 data class PaymentReceived(

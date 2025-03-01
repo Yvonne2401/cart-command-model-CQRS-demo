@@ -5,33 +5,39 @@ import java.math.BigDecimal
 import java.util.*
 
 data class CreateCart(
-    @TargetAggregateIdentifier val cartId: UUID,
+    @TargetAggregateIdentifier
+    val cartId: UUID,
 )
 
 data class AddItemToCart(
-    @TargetAggregateIdentifier val cartId: UUID,
+    @TargetAggregateIdentifier
+    val cartId: UUID,
     val productId: UUID,
     val quantity: Int,
     val basePrice: BigDecimal,
 )
 
 data class AdjustItemQuantityInCart(
-    @TargetAggregateIdentifier val cartId: UUID,
+    @TargetAggregateIdentifier
+    val cartId: UUID,
     val productId: UUID,
-    val quantityDelta: Int,
+    val quantity: Int,
 )
 
 data class AdjustPriceOfItemInCart(
-    @TargetAggregateIdentifier val cartId: UUID,
+    @TargetAggregateIdentifier
+    val cartId: UUID,
     val productId: UUID,
-    val newPrice: BigDecimal,
+    val price: BigDecimal,
 )
 data class RemoveItemFromCart(
-    @TargetAggregateIdentifier val cartId: UUID,
+    @TargetAggregateIdentifier
+    val cartId: UUID,
     val productId: UUID,
 )
 
 data class PayForCart(
-    @TargetAggregateIdentifier val cartId: UUID,
+    @TargetAggregateIdentifier
+    val cartId: UUID,
     val amountPaid: BigDecimal,
 )

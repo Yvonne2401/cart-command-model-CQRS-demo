@@ -38,12 +38,27 @@ class CqrsDemoApplicationTests {
 		mockMvc.perform(post("/carts").contentType(MediaType.APPLICATION_JSON)
 			.content("""{"cartId": "$cartId"}"""))
 			.andExpect(status().isOk())
-			.andExpect(content().string(""));
+			.andExpect(content().string(""))
 
 		mockMvc.perform(post("/carts/$cartId/add-item").contentType(MediaType.APPLICATION_JSON)
 			.content("""{"productId": "$productId", "quantity": 1, "price": 10}"""))
 			.andExpect(status().isOk())
-			.andExpect(content().string(""));
+			.andExpect(content().string(""))
+		mockMvc.perform(post("/carts/$cartId/product/$productId/adjust-quantity" ).contentType(MediaType.APPLICATION_JSON)
+			.content("""{"quantity": 6}"""))
+			.andExpect(status().isOk())
+			.andExpect(content().string(""))
+		mockMvc.perform(post("/carts/$cartId/product/$productId/adjust-price" ).contentType(MediaType.APPLICATION_JSON)
+			.content("""{"price": 4.99}"""))
+			.andExpect(status().isOk())
+			.andExpect(content().string(""))
+		mockMvc.perform(post("/carts/$cartId/product/$productId/remove-item"))
+			.andExpect(status().isOk())
+			.andExpect(content().string(""))
+		mockMvc.perform(post("/carts/$cartId/pay" ).contentType(MediaType.APPLICATION_JSON)
+			.content("""{"amountPaid": 71.96}"""))
+			.andExpect(status().isOk())
+			.andExpect(content().string(""))
 	}
-
 }
+

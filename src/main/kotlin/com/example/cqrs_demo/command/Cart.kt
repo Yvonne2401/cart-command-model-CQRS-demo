@@ -69,8 +69,8 @@ class Cart {
             if (totalAmount != calculateTotalPrice()) {
                 AggregateLifecycle.apply(TotalAmountRecalculated(command.cartId, calculateTotalPrice()))
             }
+            }
         }
-    }
 
     @CommandHandler
     fun handle(command: AdjustItemQuantityInCart) {
@@ -124,8 +124,10 @@ class Cart {
 
     }
 
-    private fun calculateTotalPrice() =
-        cartEntries.values.sumOf { it.price * it.quantity.toBigDecimal() }.setScale(2, RoundingMode.HALF_UP)
+    private fun calculateTotalPrice () : BigDecimal {
+        if (cartEntries.isEmpty()) {return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)}
+        return cartEntries.values.sumOf { it.price * it.quantity.toBigDecimal() }.setScale(2, RoundingMode.HALF_UP)
+    }
 
     @EventHandler
     fun on(event: CartCreated) {

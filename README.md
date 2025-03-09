@@ -1,4 +1,4 @@
-# CQRS-command-side-demo
+# CQRS-command-model-demo
 
 This is an example how you could build a command side webapp using:
 

@@ -1,4 +1,4 @@
-package com.example.cqrs_demo
+package com.example.demo.cqrs
 
 import community.flock.wirespec.integration.spring.kotlin.configuration.EnableWirespec
 import community.flock.wirespec.integration.spring.kotlin.configuration.EnableWirespecController

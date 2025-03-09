@@ -67,9 +67,3 @@ endpoint RemoveItemFromCart POST /carts/{cartId: String}/product/{productId: Str
     400 -> BadRequest
     404 -> NotFoundError
 }
-
-endpoint PayForCart POST PayForCart /carts/{cartId: String}/pay -> {
-    200 -> CartId
-    400 -> BadRequest
-    404 -> NotFoundError
-}

@@ -1,4 +1,4 @@
-package com.example.cqrs_demo.config
+package com.example.demo.cqrs.config
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper

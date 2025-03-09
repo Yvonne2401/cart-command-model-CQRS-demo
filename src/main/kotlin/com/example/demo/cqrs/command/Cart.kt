@@ -1,20 +1,20 @@
-package com.example.cqrs_demo.command
+package com.example.demo.cqrs.command
 
-import com.example.cqrs_demo.command.api.AddItemToCart
-import com.example.cqrs_demo.command.api.AdjustItemQuantityInCart
-import com.example.cqrs_demo.command.api.AdjustPriceOfItemInCart
-import com.example.cqrs_demo.command.api.CartCreated
-import com.example.cqrs_demo.command.api.CreateCart
-import com.example.cqrs_demo.command.api.ItemAddedToCart
-import com.example.cqrs_demo.command.api.ItemQuantityAdjustedInCart
-import com.example.cqrs_demo.command.api.ItemRemovedFromCart
-import com.example.cqrs_demo.command.api.OrderCreated
-import com.example.cqrs_demo.command.api.OrderLine
-import com.example.cqrs_demo.command.api.PayForCart
-import com.example.cqrs_demo.command.api.PaymentReceived
-import com.example.cqrs_demo.command.api.PriceOfItemInCartAdjusted
-import com.example.cqrs_demo.command.api.RemoveItemFromCart
-import com.example.cqrs_demo.command.api.TotalAmountRecalculated
+import com.example.demo.cqrs.command.api.AddItemToCart
+import com.example.demo.cqrs.command.api.AdjustItemQuantityInCart
+import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCart
+import com.example.demo.cqrs.events.CartCreated
+import com.example.demo.cqrs.command.api.CreateCart
+import com.example.demo.cqrs.command.api.ProcessPayment
+import com.example.demo.cqrs.events.ItemAddedToCart
+import com.example.demo.cqrs.events.ItemQuantityAdjustedInCart
+import com.example.demo.cqrs.events.ItemRemovedFromCart
+import com.example.demo.cqrs.events.OrderCreated
+import com.example.demo.cqrs.events.OrderLine
+import com.example.demo.cqrs.events.PaymentReceived
+import com.example.demo.cqrs.events.PriceOfItemInCartAdjusted
+import com.example.demo.cqrs.command.api.RemoveItemFromCart
+import com.example.demo.cqrs.events.TotalAmountRecalculated
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -104,24 +104,22 @@ class Cart {
     }
 
     @CommandHandler
-    fun handle(command: PayForCart) {
-        if (totalAmount > amountPaid) {
-            if (amountPaid + command.amountPaid <= totalAmount) {
-                AggregateLifecycle.apply(PaymentReceived(command.cartId, command.amountPaid))
-                if (amountPaid == totalAmount) {
-                    AggregateLifecycle.apply(
-                        OrderCreated(
-                            command.cartId,
-                            UUID.randomUUID(),
-                            cartEntries.values.map { OrderLine(it.productId, it.quantity, it.price) },
-                            totalAmount,
-                            amountPaid
-                        )
+    fun handle(command: ProcessPayment) {
+        val newAmountPaid = amountPaid + command.amountPaid
+        if (!isOrder && newAmountPaid <= totalAmount) {
+            AggregateLifecycle.apply(PaymentReceived(command.cartId, command.amountPaid))
+            if (amountPaid == totalAmount) {
+                AggregateLifecycle.apply(
+                    OrderCreated(
+                        command.cartId,
+                        UUID.randomUUID(),
+                        cartEntries.values.map { OrderLine(it.productId, it.quantity, it.price) },
+                        totalAmount,
+                        amountPaid
                     )
-                }
+                )
             }
         }
-
     }
 
     private fun calculateTotalPrice () : BigDecimal {

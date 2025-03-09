@@ -1,4 +1,4 @@
-package com.example.cqrs_demo.command.api
+package com.example.demo.cqrs.events
 
 import java.math.BigDecimal
 import java.util.*

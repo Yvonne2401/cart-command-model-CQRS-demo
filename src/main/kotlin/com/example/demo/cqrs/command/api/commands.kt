@@ -1,4 +1,4 @@
-package com.example.cqrs_demo.command.api
+package com.example.demo.cqrs.command.api
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.math.BigDecimal
@@ -36,7 +36,7 @@ data class RemoveItemFromCart(
     val productId: UUID,
 )
 
-data class PayForCart(
+data class ProcessPayment(
     @TargetAggregateIdentifier
     val cartId: UUID,
     val amountPaid: BigDecimal,

@@ -1,4 +1,4 @@
-package com.example.cqrs_demo
+package com.example.demo.cqrs
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,10 +53,6 @@ class CqrsDemoApplicationTests {
 			.andExpect(status().isOk())
 			.andExpect(content().string(""))
 		mockMvc.perform(post("/carts/$cartId/product/$productId/remove-item"))
-			.andExpect(status().isOk())
-			.andExpect(content().string(""))
-		mockMvc.perform(post("/carts/$cartId/pay" ).contentType(MediaType.APPLICATION_JSON)
-			.content("""{"amountPaid": 71.96}"""))
 			.andExpect(status().isOk())
 			.andExpect(content().string(""))
 	}

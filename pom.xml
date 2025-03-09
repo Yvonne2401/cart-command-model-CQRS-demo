@@ -133,11 +133,6 @@
 						<artifactId>kotlin-maven-noarg</artifactId>
 						<version>${kotlin.version}</version>
 					</dependency>
-					<dependency>
-						<groupId>community.flock.wirespec.integration</groupId>
-						<artifactId>spring-jvm</artifactId>
-						<version>0.11.2</version>
-					</dependency>
 				</dependencies>
 			</plugin>
 
@@ -149,7 +144,7 @@
 					<dependency>
 						<groupId>community.flock.wirespec.integration</groupId>
 						<artifactId>spring-jvm</artifactId>
-						<version>0.11.2</version>
+						<version>${wirespec.spring.integration.version}</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -171,5 +166,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

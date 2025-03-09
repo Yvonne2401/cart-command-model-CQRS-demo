@@ -1,18 +1,16 @@
-package com.example.cqrs_demo.rest
+package com.example.demo.cqrs.rest
 
-import com.example.cqrs_demo.command.api.AddItemToCart
-import com.example.cqrs_demo.command.api.AdjustItemQuantityInCart
-import com.example.cqrs_demo.command.api.AdjustPriceOfItemInCart
-import com.example.cqrs_demo.command.api.CreateCart
-import com.example.cqrs_demo.command.api.PayForCart
-import com.example.cqrs_demo.command.api.RemoveItemFromCart
+import com.example.demo.cqrs.command.api.AddItemToCart
+import com.example.demo.cqrs.command.api.AdjustItemQuantityInCart
+import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCart
+import com.example.demo.cqrs.command.api.CreateCart
+import com.example.demo.cqrs.command.api.RemoveItemFromCart
 import community.flock.wirespec.generated.java.AddItemToCartEndpoint
 import community.flock.wirespec.generated.java.AdjustItemQuantityInCartEndpoint
 import community.flock.wirespec.generated.java.AdjustPriceOfItemInCartEndpoint
 import community.flock.wirespec.generated.java.BadRequest
 import community.flock.wirespec.generated.java.CartId
 import community.flock.wirespec.generated.java.CreateCartEndpoint
-import community.flock.wirespec.generated.java.PayForCartEndpoint
 import community.flock.wirespec.generated.java.RemoveItemFromCartEndpoint
 import community.flock.wirespec.generated.java.validate
 import org.axonframework.commandhandling.gateway.CommandGateway
@@ -27,7 +25,7 @@ private const val INVALID_UUID_IN_PATH_ERROR = "Invalid UUID in path"
 @RestController
 class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoint.Handler,
     AddItemToCartEndpoint.Handler, AdjustItemQuantityInCartEndpoint.Handler, AdjustPriceOfItemInCartEndpoint.Handler,
-    RemoveItemFromCartEndpoint.Handler, PayForCartEndpoint.Handler {
+    RemoveItemFromCartEndpoint.Handler{
     override suspend fun createCart(request: CreateCartEndpoint.Request): CreateCartEndpoint.Response<*> {
         val cartId = request.body.cartId
         if (!(cartId.validate())) {
@@ -99,20 +97,5 @@ class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoin
             )
         )
         return RemoveItemFromCartEndpoint.Response200(cartId)
-    }
-
-    override suspend fun payForCart(request: PayForCartEndpoint.Request): PayForCartEndpoint.Response<*> {
-        val cartId = CartId(request.path.cartId)
-        if (!cartId.validate()) {
-            return PayForCartEndpoint.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
-        }
-        val payForCart = request.body
-        commandGateway.send<PayForCart>(
-            PayForCart(
-                UUID.fromString(request.path.cartId),
-                BigDecimal(payForCart.amountPaid).setScale(2, RoundingMode.HALF_UP)
-            )
-        )
-        return PayForCartEndpoint.Response200(cartId)
     }
 }

@@ -35,11 +35,3 @@ Content-Type: application/json
 POST http://{{host}}:{{port}}/carts/{{cartId}}/product/{{productId}}/remove-item
 Content-Type: application/json
 
-### Pay for cart
-POST http://{{host}}:{{port}}/carts/{{cartId}}/pay
-Content-Type: application/json
-
-{
-  "amountPaid": 71.96
-}
-

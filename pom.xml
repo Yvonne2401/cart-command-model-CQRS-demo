@@ -135,35 +135,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
-			<plugin>
-				<groupId>community.flock.wirespec.plugin.maven</groupId>
-				<artifactId>wirespec-maven-plugin</artifactId>
-				<version>0.11.2</version>
-				<dependencies>
-					<dependency>
-						<groupId>community.flock.wirespec.integration</groupId>
-						<artifactId>spring-jvm</artifactId>
-						<version>${wirespec.spring.integration.version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>spring</id>
-						<goals>
-							<goal>custom</goal>
-						</goals>
-						<configuration>
-							<input>${project.basedir}/src/main/wirespec</input>
-							<output>${project.build.directory}/generated-sources</output>
-							<emitterClass>community.flock.wirespec.integration.spring.kotlin.emit.SpringKotlinEmitter</emitterClass>
-							<shared>Kotlin</shared>
-							<extension>kt</extension>
-							<packageName>community.flock.wirespec.generated.java</packageName>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+
 </project>

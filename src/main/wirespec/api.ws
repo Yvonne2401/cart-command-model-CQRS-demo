@@ -67,3 +67,6 @@ endpoint RemoveItemFromCart POST /carts/{cartId: String}/product/{productId: Str
     400 -> BadRequest
     404 -> NotFoundError
 }
+endpoint CartId GET /generate-cart-id -> {
+    200 -> CartId
+}

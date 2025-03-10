@@ -10,6 +10,7 @@ import community.flock.wirespec.generated.java.AdjustItemQuantityInCartEndpoint
 import community.flock.wirespec.generated.java.AdjustPriceOfItemInCartEndpoint
 import community.flock.wirespec.generated.java.BadRequest
 import community.flock.wirespec.generated.java.CartId
+import community.flock.wirespec.generated.java.CartIdEndpoint
 import community.flock.wirespec.generated.java.CreateCartEndpoint
 import community.flock.wirespec.generated.java.RemoveItemFromCartEndpoint
 import community.flock.wirespec.generated.java.validate
@@ -25,7 +26,7 @@ private const val INVALID_UUID_IN_PATH_ERROR = "Invalid UUID in path"
 @RestController
 class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoint.Handler,
     AddItemToCartEndpoint.Handler, AdjustItemQuantityInCartEndpoint.Handler, AdjustPriceOfItemInCartEndpoint.Handler,
-    RemoveItemFromCartEndpoint.Handler{
+    RemoveItemFromCartEndpoint.Handler, CartIdEndpoint.Handler{
     override suspend fun createCart(request: CreateCartEndpoint.Request): CreateCartEndpoint.Response<*> {
         val cartId = request.body.cartId
         if (!(cartId.validate())) {
@@ -79,7 +80,7 @@ class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoin
             AdjustPriceOfItemInCart(
                 UUID.fromString(request.path.cartId),
                 UUID.fromString(request.path.productId),
-                BigDecimal(adjustPriceOfItemInCart.price).setScale(2)
+                BigDecimal(adjustPriceOfItemInCart.price).setScale(2, RoundingMode.HALF_UP)
             )
         )
         return AdjustPriceOfItemInCartEndpoint.Response200(cartId)
@@ -97,5 +98,9 @@ class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoin
             )
         )
         return RemoveItemFromCartEndpoint.Response200(cartId)
+    }
+
+    override suspend fun cartId(request: CartIdEndpoint.Request): CartIdEndpoint.Response<*> {
+        return CartIdEndpoint.Response200(CartId(UUID.randomUUID().toString()))
     }
 }

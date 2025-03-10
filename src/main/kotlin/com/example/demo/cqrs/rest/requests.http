@@ -1,3 +1,8 @@
+### Generate cartId
+GET http://{{host}}:{{port}}/generate-cart-id
+Content-Type: application/json
+
+
 ### Create cart
 POST http://{{host}}:{{port}}/carts
 Content-Type: application/json

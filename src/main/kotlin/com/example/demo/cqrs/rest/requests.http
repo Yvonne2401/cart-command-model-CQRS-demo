@@ -1,0 +1,42 @@
+### Generate cartId
+GET http://{{host}}:{{port}}/generate-cart-id
+Content-Type: application/json
+
+
+### Create cart
+POST http://{{host}}:{{port}}/carts
+Content-Type: application/json
+
+{
+  "cartId": "{{cartId}}"
+}
+
+### Add item to cart
+POST http://{{host}}:{{port}}/carts/{{cartId}}/add-item
+Content-Type: application/json
+
+{
+  "productId": "{{productId}}",
+  "quantity": 4,
+  "price": 17.99
+}
+
+### Adjust item quantity in cart
+POST http://{{host}}:{{port}}/carts/{{cartId}}/product/{{productId}}/adjust-quantity
+Content-Type: application/json
+
+{
+  "quantity": 6
+}
+
+### Adjust item price in cart
+POST http://{{host}}:{{port}}/carts/{{cartId}}/product/{{productId}}/adjust-price
+Content-Type: application/json
+
+{
+  "price": 20.99
+}
+### Remove item from cart
+POST http://{{host}}:{{port}}/carts/{{cartId}}/product/{{productId}}/remove-item
+Content-Type: application/json
+

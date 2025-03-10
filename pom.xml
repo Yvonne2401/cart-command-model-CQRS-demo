@@ -12,20 +12,8 @@
 	<artifactId>cqrs-command-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cqrs-command-demo</name>
-	<description>CQRS demo with Axon</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<description>CQRS demo with Axon. Command model for ecommerce checkout</description>
+
 	<properties>
 		<java.version>21</java.version>
 		<kotlin.version>2.1.10</kotlin.version>
@@ -69,7 +57,6 @@
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -84,6 +71,16 @@
 			<groupId>org.jetbrains.kotlin</groupId>
 			<artifactId>kotlin-test-junit5</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.axonframework</groupId>
+			<artifactId>axon-test</artifactId>
+			<version>${axon.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -126,7 +123,35 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+
+			<plugin>
+				<groupId>community.flock.wirespec.plugin.maven</groupId>
+				<artifactId>wirespec-maven-plugin</artifactId>
+				<version>${wirespec.spring.integration.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>community.flock.wirespec.integration</groupId>
+						<artifactId>spring-jvm</artifactId>
+						<version>${wirespec.spring.integration.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>spring</id>
+						<goals>
+							<goal>custom</goal>
+						</goals>
+						<configuration>
+							<input>${project.basedir}/src/main/wirespec</input>
+							<output>${project.build.directory}/generated-sources</output>
+							<emitterClass>community.flock.wirespec.integration.spring.kotlin.emit.SpringKotlinEmitter</emitterClass>
+							<shared>Kotlin</shared>
+							<extension>kt</extension>
+							<packageName>community.flock.wirespec.generated.java</packageName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

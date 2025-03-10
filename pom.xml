@@ -15,7 +15,7 @@
 	<description>CQRS demo with Axon. Command model for ecommerce checkout</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>23</java.version>
 		<kotlin.version>2.1.10</kotlin.version>
 		<axon.version>4.11.1</axon.version>
 		<wirespec.spring.integration.version>0.12.0</wirespec.spring.integration.version>

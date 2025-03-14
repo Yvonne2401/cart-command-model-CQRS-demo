@@ -3,9 +3,10 @@ package com.example.demo.cqrs.command
 import com.example.demo.cqrs.command.api.AddItemToCart
 import com.example.demo.cqrs.command.api.AdjustItemQuantityInCart
 import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCart
-import com.example.demo.cqrs.events.CartCreated
 import com.example.demo.cqrs.command.api.CreateCart
 import com.example.demo.cqrs.command.api.ProcessPayment
+import com.example.demo.cqrs.command.api.RemoveItemFromCart
+import com.example.demo.cqrs.events.CartCreated
 import com.example.demo.cqrs.events.ItemAddedToCart
 import com.example.demo.cqrs.events.ItemQuantityAdjustedInCart
 import com.example.demo.cqrs.events.ItemRemovedFromCart
@@ -13,7 +14,6 @@ import com.example.demo.cqrs.events.OrderCreated
 import com.example.demo.cqrs.events.OrderLine
 import com.example.demo.cqrs.events.PaymentReceived
 import com.example.demo.cqrs.events.PriceOfItemInCartAdjusted
-import com.example.demo.cqrs.command.api.RemoveItemFromCart
 import com.example.demo.cqrs.events.TotalAmountRecalculated
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventhandling.EventHandler
@@ -22,11 +22,10 @@ import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.*
+import java.util.UUID
 
 @Aggregate
 class Cart {
-
     @AggregateIdentifier
     lateinit var cartId: UUID
 
@@ -53,8 +52,8 @@ class Cart {
                     command.cartId,
                     command.productId,
                     command.quantity,
-                    command.basePrice
-                )
+                    command.basePrice,
+                ),
             )
             if (totalAmount != calculateTotalPrice()) {
                 AggregateLifecycle.apply(TotalAmountRecalculated(command.cartId, calculateTotalPrice()))
@@ -69,8 +68,8 @@ class Cart {
             if (totalAmount != calculateTotalPrice()) {
                 AggregateLifecycle.apply(TotalAmountRecalculated(command.cartId, calculateTotalPrice()))
             }
-            }
         }
+    }
 
     @CommandHandler
     fun handle(command: AdjustItemQuantityInCart) {
@@ -82,8 +81,8 @@ class Cart {
                     ItemQuantityAdjustedInCart(
                         command.cartId,
                         command.productId,
-                        command.quantity
-                    )
+                        command.quantity,
+                    ),
                 )
             }
             if (totalAmount != calculateTotalPrice()) {
@@ -99,7 +98,6 @@ class Cart {
             if (totalAmount != calculateTotalPrice()) {
                 AggregateLifecycle.apply(TotalAmountRecalculated(command.cartId, calculateTotalPrice()))
             }
-
         }
     }
 
@@ -115,15 +113,17 @@ class Cart {
                         UUID.randomUUID(),
                         cartEntries.values.map { OrderLine(it.productId, it.quantity, it.price) },
                         totalAmount,
-                        amountPaid
-                    )
+                        amountPaid,
+                    ),
                 )
             }
         }
     }
 
-    private fun calculateTotalPrice () : BigDecimal {
-        if (cartEntries.isEmpty()) {return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)}
+    private fun calculateTotalPrice(): BigDecimal {
+        if (cartEntries.isEmpty()) {
+            return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
+        }
         return cartEntries.values.sumOf { it.price * it.quantity.toBigDecimal() }.setScale(2, RoundingMode.HALF_UP)
     }
 

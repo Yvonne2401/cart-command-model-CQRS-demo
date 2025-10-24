@@ -4,12 +4,12 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier
 import java.math.BigDecimal
 import java.util.*
 
-data class CreateCart(
+data class CreateCartCommand(
     @TargetAggregateIdentifier
     val cartId: UUID,
 )
 
-data class AddItemToCart(
+data class AddItemToCartCommand(
     @TargetAggregateIdentifier
     val cartId: UUID,
     val productId: UUID,
@@ -17,26 +17,26 @@ data class AddItemToCart(
     val basePrice: BigDecimal,
 )
 
-data class AdjustItemQuantityInCart(
+data class AdjustItemQuantityInCartCommand(
     @TargetAggregateIdentifier
     val cartId: UUID,
     val productId: UUID,
     val quantity: Int,
 )
 
-data class AdjustPriceOfItemInCart(
+data class AdjustPriceOfItemInCartCommand(
     @TargetAggregateIdentifier
     val cartId: UUID,
     val productId: UUID,
     val price: BigDecimal,
 )
-data class RemoveItemFromCart(
+data class RemoveItemFromCartCommand(
     @TargetAggregateIdentifier
     val cartId: UUID,
     val productId: UUID,
 )
 
-data class ProcessPayment(
+data class ProcessPaymentCommand(
     @TargetAggregateIdentifier
     val cartId: UUID,
     val amountPaid: BigDecimal,

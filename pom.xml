@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.4</version>
+		<version>3.5.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -18,7 +18,8 @@
 		<java.version>23</java.version>
 		<kotlin.version>2.2.0</kotlin.version>
 		<axon.version>4.12.1</axon.version>
-		<wirespec.spring.integration.version>0.14.3</wirespec.spring.integration.version>
+		<kotlin.version>2.2.21</kotlin.version>
+		<wirespec.spring.integration.version>0.17.3</wirespec.spring.integration.version>
 	</properties>
 
 	<dependencyManagement>
@@ -157,7 +158,6 @@
 							<input>${project.basedir}/src/main/wirespec</input>
 							<output>${project.build.directory}/generated-sources</output>
 							<emitterClass>community.flock.wirespec.integration.spring.kotlin.emit.SpringKotlinEmitter</emitterClass>
-							<packageName>community.flock.wirespec.generated.java</packageName>
 						</configuration>
 					</execution>
 				</executions>

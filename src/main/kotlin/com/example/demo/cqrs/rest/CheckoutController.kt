@@ -1,19 +1,17 @@
 package com.example.demo.cqrs.rest
 
-import com.example.demo.cqrs.command.api.AddItemToCart
-import com.example.demo.cqrs.command.api.AdjustItemQuantityInCart
-import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCart
-import com.example.demo.cqrs.command.api.CreateCart
-import com.example.demo.cqrs.command.api.RemoveItemFromCart
-import community.flock.wirespec.generated.java.AddItemToCartEndpoint
-import community.flock.wirespec.generated.java.AdjustItemQuantityInCartEndpoint
-import community.flock.wirespec.generated.java.AdjustPriceOfItemInCartEndpoint
-import community.flock.wirespec.generated.java.BadRequest
-import community.flock.wirespec.generated.java.CartId
-import community.flock.wirespec.generated.java.CartIdEndpoint
-import community.flock.wirespec.generated.java.CreateCartEndpoint
-import community.flock.wirespec.generated.java.RemoveItemFromCartEndpoint
-import community.flock.wirespec.generated.java.validate
+import com.example.demo.cqrs.command.api.AddItemToCartCommand
+import com.example.demo.cqrs.command.api.AdjustItemQuantityInCartCommand
+import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCartCommand
+import com.example.demo.cqrs.command.api.CreateCartCommand
+import com.example.demo.cqrs.command.api.RemoveItemFromCartCommand
+import community.flock.wirespec.generated.endpoint.AddItemToCart
+import community.flock.wirespec.generated.endpoint.AdjustItemQuantityInCart
+import community.flock.wirespec.generated.endpoint.AdjustPriceOfItemInCart
+import community.flock.wirespec.generated.endpoint.CreateCart
+import community.flock.wirespec.generated.endpoint.RemoveItemFromCart
+import community.flock.wirespec.generated.model.BadRequest
+import community.flock.wirespec.generated.model.validate
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
@@ -24,83 +22,80 @@ import java.util.*
 private const val INVALID_UUID_IN_PATH_ERROR = "Invalid UUID in path"
 
 @RestController
-class CheckoutController(val commandGateway: CommandGateway) : CreateCartEndpoint.Handler,
-    AddItemToCartEndpoint.Handler, AdjustItemQuantityInCartEndpoint.Handler, AdjustPriceOfItemInCartEndpoint.Handler,
-    RemoveItemFromCartEndpoint.Handler, CartIdEndpoint.Handler{
-    override suspend fun createCart(request: CreateCartEndpoint.Request): CreateCartEndpoint.Response<*> {
+class CheckoutController(val commandGateway: CommandGateway) : CreateCart.Handler,
+    AddItemToCart.Handler, AdjustItemQuantityInCart.Handler, AdjustPriceOfItemInCart.Handler,
+    RemoveItemFromCart.Handler{
+    override suspend fun createCart(request: CreateCart.Request): CreateCart.Response<*> {
         val cartId = request.body.cartId
         if (!(cartId.validate())) {
-            return CreateCartEndpoint.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
+            return CreateCart.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
         }
-        commandGateway.send<CreateCart>(CreateCart(UUID.fromString(cartId.value)))
-        return CreateCartEndpoint.Response200(CartId(cartId.value))
+        commandGateway.send<CreateCartCommand>(CreateCartCommand(UUID.fromString(cartId.value)))
+        return CreateCart.Response200(community.flock.wirespec.generated.model.CartId(cartId.value))
     }
 
-    override suspend fun addItemToCart(request: AddItemToCartEndpoint.Request): AddItemToCartEndpoint.Response<*> {
+    override suspend fun addItemToCart(request: AddItemToCart.Request): AddItemToCart.Response<*> {
         val cartIdString = request.path.cartId
-        val cartId = CartId(cartIdString)
+        val cartId = community.flock.wirespec.generated.model.CartId(cartIdString)
         if (!cartId.validate()) {
-            return AddItemToCartEndpoint.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
+            return AddItemToCart.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
         }
         val addItemToCart = request.body
         commandGateway.send<AddItemToCart>(
-            AddItemToCart(
+            AddItemToCartCommand(
                 UUID.fromString(cartIdString),
                 UUID.fromString(addItemToCart.productId.value),
                 addItemToCart.quantity.toInt(),
                 BigDecimal(addItemToCart.price).setScale(2, RoundingMode.HALF_UP)
             )
         )
-        return AddItemToCartEndpoint.Response200(cartId)
+        return AddItemToCart.Response200(cartId)
     }
 
-    override suspend fun adjustItemQuantityInCart(request: AdjustItemQuantityInCartEndpoint.Request): AdjustItemQuantityInCartEndpoint.Response<*> {
-        val cartId = CartId(request.path.cartId)
+    override suspend fun adjustItemQuantityInCart(request: AdjustItemQuantityInCart.Request): AdjustItemQuantityInCart.Response<*> {
+        val cartId = community.flock.wirespec.generated.model.CartId(request.path.cartId)
         if (!cartId.validate()) {
-            return AdjustItemQuantityInCartEndpoint.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
+            return AdjustItemQuantityInCart.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
         }
         val adjustItemQuantityInCart = request.body
         commandGateway.send<AdjustItemQuantityInCart>(
-            AdjustItemQuantityInCart(
+            AdjustItemQuantityInCartCommand(
                 UUID.fromString(cartId.value),
                 UUID.fromString(request.path.productId),
                 adjustItemQuantityInCart.quantity.toInt()
             )
         )
-        return AdjustItemQuantityInCartEndpoint.Response200(cartId)
+        return AdjustItemQuantityInCart.Response200(cartId)
     }
 
-    override suspend fun adjustPriceOfItemInCart(request: AdjustPriceOfItemInCartEndpoint.Request): AdjustPriceOfItemInCartEndpoint.Response<*> {
-        val cartId = CartId(request.path.cartId)
+    override suspend fun adjustPriceOfItemInCart(request: AdjustPriceOfItemInCart.Request): AdjustPriceOfItemInCart.Response<*> {
+        val cartId = community.flock.wirespec.generated.model.CartId(request.path.cartId)
         if (!cartId.validate()) {
-            return AdjustPriceOfItemInCartEndpoint.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
+            return AdjustPriceOfItemInCart.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
         }
         val adjustPriceOfItemInCart = request.body
         commandGateway.send<AdjustPriceOfItemInCart>(
-            AdjustPriceOfItemInCart(
+            AdjustPriceOfItemInCartCommand(
                 UUID.fromString(request.path.cartId),
                 UUID.fromString(request.path.productId),
                 BigDecimal(adjustPriceOfItemInCart.price).setScale(2, RoundingMode.HALF_UP)
             )
         )
-        return AdjustPriceOfItemInCartEndpoint.Response200(cartId)
+        return AdjustPriceOfItemInCart.Response200(cartId)
     }
 
-    override suspend fun removeItemFromCart(request: RemoveItemFromCartEndpoint.Request): RemoveItemFromCartEndpoint.Response<*> {
-        val cartId = CartId(request.path.cartId)
+    override suspend fun removeItemFromCart(request: RemoveItemFromCart.Request): RemoveItemFromCart.Response<*> {
+        val cartId = community.flock.wirespec.generated.model.CartId(request.path.cartId)
         if (!cartId.validate()) {
-            return RemoveItemFromCartEndpoint.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
+            return RemoveItemFromCart.Response400(BadRequest("400", INVALID_UUID_IN_PATH_ERROR))
         }
-        commandGateway.send<RemoveItemFromCartEndpoint>(
-            RemoveItemFromCart(
+        commandGateway.send<RemoveItemFromCart>(
+            RemoveItemFromCartCommand(
                 UUID.fromString(request.path.cartId),
                 UUID.fromString(request.path.productId),
             )
         )
-        return RemoveItemFromCartEndpoint.Response200(cartId)
+        return RemoveItemFromCart.Response200(cartId)
     }
 
-    override suspend fun cartId(request: CartIdEndpoint.Request): CartIdEndpoint.Response<*> {
-        return CartIdEndpoint.Response200(CartId(UUID.randomUUID().toString()))
     }
-}

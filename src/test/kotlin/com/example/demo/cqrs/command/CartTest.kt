@@ -1,10 +1,10 @@
 package com.example.demo.cqrs.command
 
-import com.example.demo.cqrs.command.api.AddItemToCart
-import com.example.demo.cqrs.command.api.AdjustItemQuantityInCart
-import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCart
-import com.example.demo.cqrs.command.api.CreateCart
-import com.example.demo.cqrs.command.api.RemoveItemFromCart
+import com.example.demo.cqrs.command.api.AddItemToCartCommand
+import com.example.demo.cqrs.command.api.AdjustItemQuantityInCartCommand
+import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCartCommand
+import com.example.demo.cqrs.command.api.CreateCartCommand
+import com.example.demo.cqrs.command.api.RemoveItemFromCartCommand
 import com.example.demo.cqrs.events.CartCreated
 import com.example.demo.cqrs.events.ItemAddedToCart
 import com.example.demo.cqrs.events.ItemQuantityAdjustedInCart
@@ -32,7 +32,7 @@ class CartTest {
         val cartId = UUID.randomUUID()
         fixture
             .givenNoPriorActivity()
-            .`when`(CreateCart(cartId))
+            .`when`(CreateCartCommand(cartId))
             .expectEvents(CartCreated(cartId))
     }
 
@@ -45,7 +45,7 @@ class CartTest {
 
         fixture
             .given(CartCreated(cartId))
-            .`when`(AddItemToCart(cartId, productId, quantity, basePrice))
+            .`when`(AddItemToCartCommand(cartId, productId, quantity, basePrice))
             .expectEvents(
                 ItemAddedToCart(cartId, productId, quantity, basePrice),
                 TotalAmountRecalculated(cartId, basePrice * quantity.toBigDecimal()),
@@ -64,7 +64,7 @@ class CartTest {
             .given(
                 CartCreated(cartId),
                 ItemAddedToCart(cartId, productId, quantity, basePrice),
-            ).`when`(AdjustItemQuantityInCart(cartId, productId, newQuantity))
+            ).`when`(AdjustItemQuantityInCartCommand(cartId, productId, newQuantity))
             .expectEvents(
                 ItemQuantityAdjustedInCart(cartId, productId, newQuantity),
                 TotalAmountRecalculated(cartId, basePrice * newQuantity.toBigDecimal()),
@@ -83,7 +83,7 @@ class CartTest {
             .given(
                 CartCreated(cartId),
                 ItemAddedToCart(cartId, productId, quantity, basePrice),
-            ).`when`(AdjustPriceOfItemInCart(cartId, productId, newPrice))
+            ).`when`(AdjustPriceOfItemInCartCommand(cartId, productId, newPrice))
             .expectEvents(
                 PriceOfItemInCartAdjusted(cartId, productId, newPrice),
                 TotalAmountRecalculated(cartId, newPrice * quantity.toBigDecimal()),
@@ -102,7 +102,7 @@ class CartTest {
                 CartCreated(cartId),
                 ItemAddedToCart(cartId, productId, quantity, basePrice),
                 TotalAmountRecalculated(cartId, basePrice * quantity.toBigDecimal()),
-            ).`when`(RemoveItemFromCart(cartId, productId))
+            ).`when`(RemoveItemFromCartCommand(cartId, productId))
             .expectEvents(
                 ItemRemovedFromCart(cartId, productId),
                 TotalAmountRecalculated(cartId, BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)),

@@ -1,11 +1,11 @@
 package com.example.demo.cqrs.command
 
-import com.example.demo.cqrs.command.api.AddItemToCart
-import com.example.demo.cqrs.command.api.AdjustItemQuantityInCart
-import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCart
-import com.example.demo.cqrs.command.api.CreateCart
-import com.example.demo.cqrs.command.api.ProcessPayment
-import com.example.demo.cqrs.command.api.RemoveItemFromCart
+import com.example.demo.cqrs.command.api.AddItemToCartCommand
+import com.example.demo.cqrs.command.api.AdjustItemQuantityInCartCommand
+import com.example.demo.cqrs.command.api.AdjustPriceOfItemInCartCommand
+import com.example.demo.cqrs.command.api.CreateCartCommand
+import com.example.demo.cqrs.command.api.ProcessPaymentCommand
+import com.example.demo.cqrs.command.api.RemoveItemFromCartCommand
 import com.example.demo.cqrs.events.CartCreated
 import com.example.demo.cqrs.events.ItemAddedToCart
 import com.example.demo.cqrs.events.ItemQuantityAdjustedInCart
@@ -40,12 +40,12 @@ class Cart {
     constructor()
 
     @CommandHandler
-    constructor(command: CreateCart) {
+    constructor(command: CreateCartCommand) {
         AggregateLifecycle.apply(CartCreated(command.cartId))
     }
 
     @CommandHandler
-    fun handle(command: AddItemToCart) {
+    fun handle(command: AddItemToCartCommand) {
         if (!cartEntries.containsKey(command.productId)) {
             AggregateLifecycle.apply(
                 ItemAddedToCart(
@@ -62,7 +62,7 @@ class Cart {
     }
 
     @CommandHandler
-    fun handle(command: RemoveItemFromCart) {
+    fun handle(command: RemoveItemFromCartCommand) {
         if (cartEntries.containsKey(command.productId)) {
             AggregateLifecycle.apply(ItemRemovedFromCart(command.cartId, command.productId))
             if (totalAmount != calculateTotalPrice()) {
@@ -72,7 +72,7 @@ class Cart {
     }
 
     @CommandHandler
-    fun handle(command: AdjustItemQuantityInCart) {
+    fun handle(command: AdjustItemQuantityInCartCommand) {
         cartEntries[command.productId]?.let {
             if (command.quantity <= 0) {
                 AggregateLifecycle.apply(ItemRemovedFromCart(command.cartId, command.productId))
@@ -92,7 +92,7 @@ class Cart {
     }
 
     @CommandHandler
-    fun handle(command: AdjustPriceOfItemInCart) {
+    fun handle(command: AdjustPriceOfItemInCartCommand) {
         cartEntries[command.productId]?.let {
             AggregateLifecycle.apply(PriceOfItemInCartAdjusted(command.cartId, command.productId, command.price))
             if (totalAmount != calculateTotalPrice()) {
@@ -102,7 +102,7 @@ class Cart {
     }
 
     @CommandHandler
-    fun handle(command: ProcessPayment) {
+    fun handle(command: ProcessPaymentCommand) {
         val newAmountPaid = amountPaid + command.amountPaid
         if (!isOrder && newAmountPaid <= totalAmount) {
             AggregateLifecycle.apply(PaymentReceived(command.cartId, command.amountPaid))
